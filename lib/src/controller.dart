@@ -145,3 +145,25 @@ class ControllerHelper {
     controller._stateHashCode = value;
   }
 }
+
+class AreaConfigurable {
+  AreaConfigurable({required this.area, required this.flex, required this.min});
+
+  final Area area;
+  final double flex;
+  final double min;
+}
+
+class UpdatableMultiSplitViewController extends MultiSplitViewController {
+  UpdatableMultiSplitViewController({
+    required List<Area> areas,
+  }) : super(areas: areas);
+
+  void updateAreasConfig(List<AreaConfigurable> areas) {
+    for (var element in areas) {
+      AreaHelper.setFlex(area: element.area, flex: element.flex);
+      AreaHelper.setMin(area: element.area, min: element.min);
+    }
+    _updateAreas();
+  }
+}
