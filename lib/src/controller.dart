@@ -161,9 +161,8 @@ class UpdatableMultiSplitViewController extends MultiSplitViewController {
 
   void updateAreasConfig(List<AreaConfigurable> areas) {
     for (var element in areas) {
-      AreaHelper.setFlex(area: element.area, flex: element.flex);
       AreaHelper.setMin(area: element.area, min: element.min);
+      AreaHelper.setFlex(area: element.area, flex: element.flex);
     }
-    _updateAreas();
   }
 }
