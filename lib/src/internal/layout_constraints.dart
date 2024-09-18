@@ -10,43 +10,45 @@ import 'package:multi_split_view/src/internal/num_util.dart';
 @internal
 class LayoutConstraints {
   factory LayoutConstraints(
-      {required final int areasCount,
+      {required final MultiSplitViewController controller,
       required final double containerSize,
-      required final double dividerThickness}) {
-    NumUtil.validateInt('childrenCount', areasCount);
+      required final double dividerThickness,
+      required final double dividerHandleBuffer}) {
     NumUtil.validateDouble('dividerThickness', dividerThickness);
+    NumUtil.validateDouble('dividerHandleBuffer', dividerHandleBuffer);
     NumUtil.validateDouble('containerSize', containerSize);
-    final double totalDividerSize =
-        areasCount > 1 ? (areasCount - 1) * dividerThickness : 0;
+    final double totalDividerSize = controller.areasCount > 1
+        ? (controller.areasCount - 1) * dividerThickness
+        : 0;
     final double spaceForAreas = math.max(0, containerSize - totalDividerSize);
     return LayoutConstraints._(
-        areasCount: areasCount,
         containerSize: containerSize,
         dividerThickness: dividerThickness,
+        dividerHandleBuffer: dividerHandleBuffer,
         totalDividerSize: totalDividerSize,
-        spaceForAreas: spaceForAreas);
+        spaceForAreas: NumUtil.fix('spaceForAreas', spaceForAreas));
   }
 
   LayoutConstraints._(
-      {required int areasCount,
-      required double containerSize,
+      {required double containerSize,
       required double dividerThickness,
+      required double dividerHandleBuffer,
       required double totalDividerSize,
       required double spaceForAreas})
-      : areasCount = areasCount,
-        containerSize = containerSize,
+      : containerSize = containerSize,
         dividerThickness = dividerThickness,
+        dividerHandleBuffer = dividerHandleBuffer,
         totalDividerSize = totalDividerSize,
         spaceForAreas = spaceForAreas;
-
-  /// The count of visible areas on the screen.
-  final int areasCount;
 
   /// The container size.
   final double containerSize;
 
   /// The divider thickness defined by the theme.
   final double dividerThickness;
+
+  /// The additional clickable area around the divider defined by the theme.
+  final double dividerHandleBuffer;
 
   /// The total size of all dividers.
   final double totalDividerSize;
@@ -67,6 +69,9 @@ class LayoutConstraints {
       required SizeOverflowPolicy sizeOverflowPolicy,
       required SizeUnderflowPolicy sizeUnderflowPolicy,
       required MinSizeRecoveryPolicy minSizeRecoveryPolicy}) {
+    if (controllerHelper.areas.isEmpty) {
+      return;
+    }
     bool changed = false;
     int flexCount = 0;
     double totalSize = 0;
@@ -97,6 +102,7 @@ class LayoutConstraints {
           totalSize -= excessToRemove;
         }
       }
+
       changed = true;
     }
     if (totalSize < spaceForAreas && minSizeToRecover.isNotEmpty) {
@@ -214,7 +220,9 @@ class LayoutConstraints {
         if (onDividerLayout != null &&
             (onlyOnIndex == null || onlyOnIndex == index)) {
           onDividerLayout(
-              index: index, start: start, thickness: dividerThickness);
+              index: index,
+              start: start - dividerHandleBuffer,
+              thickness: dividerThickness + (2 * dividerHandleBuffer));
         }
         start += dividerThickness;
       }

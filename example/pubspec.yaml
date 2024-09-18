@@ -9,8 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  multi_split_view: #^2.4.0
+  multi_split_view: #^3.2.1
     path: ../
+  watch_it: ^1.4.2
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:multi_split_view/src/area_widget_builder.dart';
 import 'package:multi_split_view/src/internal/num_util.dart';
@@ -25,9 +24,11 @@ class Area {
       double? flex,
       double? min,
       double? max,
+      dynamic id,
       this.data,
       this.builder})
-      : _size = size,
+      : this.id = id != null ? id : _AreaId(),
+        _size = size,
         _flex = flex,
         _min = min,
         _max = max {
@@ -87,18 +88,38 @@ class Area {
   /// Any data associated with the area.
   dynamic data;
 
-  UniqueKey _key = UniqueKey();
+  /// Used as an internal Key and facilitates reconfiguration of the layout
+  /// while maintaining the state of the widget.
+  /// It will never be null and must be unique in the layout.
+  final dynamic id;
 
   /// The widget builder.
   AreaWidgetBuilder? builder;
+
+  /// Creates a copy of this [Area] with the given fields replaced with their.
+  Area copyWith({
+    dynamic Function()? id,
+    double? Function()? size,
+    double? Function()? flex,
+    double? Function()? min,
+    double? Function()? max,
+    dynamic Function()? data,
+    AreaWidgetBuilder? Function()? builder,
+  }) {
+    return Area(
+      id: id == null ? this.id : id(),
+      size: size == null ? this.size : size(),
+      flex: flex == null ? this.flex : flex(),
+      min: min == null ? this.min : min(),
+      max: max == null ? this.max : max(),
+      data: data == null ? this.data : data(),
+      builder: builder == null ? this.builder : builder(),
+    );
+  }
 }
 
 @internal
 class AreaHelper {
-  static Key keyFrom({required Area area}) {
-    return area._key;
-  }
-
   /// Sets the area flex value.
   static void setFlex({required Area area, required double flex}) {
     flex = NumUtil.fix('flex', flex);
@@ -132,5 +153,13 @@ class AreaHelper {
   /// Sets the area index.
   static void setIndex({required Area area, required int index}) {
     area._index = index;
+  }
+}
+
+/// Default area id object
+class _AreaId {
+  @override
+  String toString() {
+    return 'area id: $hashCode';
   }
 }
