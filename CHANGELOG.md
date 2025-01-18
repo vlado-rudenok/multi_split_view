@@ -1,3 +1,47 @@
+## 3.6.1-rc.2
+
+* Bugfix
+  * When the `antiAliasingWorkaround` option is enabled, it may cut off the last pixel on the right in certain cases.
+
+## 3.6.0
+
+* `Area`
+  * Allow changing size, flex, min and max values.
+
+## 3.5.0
+
+* Bugfix
+  * The `Area.copyWith` method does not allow nulling values. The API has been changed to support this.
+
+## 3.4.0
+
+* `MultiSplitView`
+  * Added `areaClipBehavior` to control area clipping.
+
+## 3.3.0
+
+* `Area`
+  * Added `copyWith` method.
+* `MultiSplitView`
+  * Added `onDividerDragStart` and `onDividerDragEnd` callbacks.
+* `MultiSplitViewThemeData`
+  * Allows divider without thickness.
+  * Allows increasing the handle area around the divider.
+
+## 3.2.2
+
+* Bugfix: The divider does not move when the widget's size includes a tiny fractional value.
+
+## 3.2.1
+
+* Bugfix: `MultiSplitViewController` throwing error when being built or modified to have no areas.
+
+## 3.2.0
+
+* `Area`
+  * Adding `id` to be used as an internal Key and facilitating reconfiguration of the layout while maintaining the state of the widgets.
+* Avoiding rebuilding areas when hovering over the divider.
+
 ## 3.1.0
 
 * `Area`
@@ -9,11 +53,11 @@
 
 ## 3.0.2
 
-Bug fix: Other Widgets visually behind are not receiving mouse events.
+Bugfix: Other Widgets visually behind are not receiving mouse events.
 
 ## 3.0.1
 
-Bug fix: Stretching to recover the minimum size when space is available.
+Bugfix: Stretching to recover the minimum size when space is available.
 
 ## 3.0.0
 
@@ -30,7 +74,7 @@ Bug fix: Stretching to recover the minimum size when space is available.
 * `MultiSplitView`
   * Width and height configuration to be used in an unbounded situation.
 * Setting the widget directly in the area or through builders.
-* Bug fix
+* Bugfix
   * Area using the child widget key.
 
 ## 2.4.0
