@@ -1,3 +1,13 @@
+## 3.6.1-rc.2
+
+* Bugfix
+  * When the `antiAliasingWorkaround` option is enabled, it may cut off the last pixel on the right in certain cases.
+
+## 3.6.0
+
+* `Area`
+  * Allow changing size, flex, min and max values.
+
 ## 3.5.0
 
 * Bugfix
